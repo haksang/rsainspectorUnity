@@ -5,9 +5,7 @@ public class MainManager : MonoBehaviour {
 
     public enum state
     {
-        Init = 0,
-        Main = 1,
-        Inspect = 2,
+        Init , Main , Inspect
     }
 
     public state currentstate;
