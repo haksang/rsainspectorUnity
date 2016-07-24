@@ -112,7 +112,7 @@ namespace GameSlyce
             //if (gsList.Count > 3)
             //{
             //    SetScrollBarVisibility(true);
-            //}
+            //}0
         }
 
         private void SetScrollBarVisibility(bool status)
