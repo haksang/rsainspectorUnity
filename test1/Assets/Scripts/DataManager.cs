@@ -24,7 +24,7 @@ public class DataManager : MonoBehaviour {
 
     public void setnumber()
     {
-
+    
     }
 
 }
