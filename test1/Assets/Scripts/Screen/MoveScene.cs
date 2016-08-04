@@ -4,21 +4,19 @@ using System.Collections;
 
 public class MoveScene : MonoBehaviour {
 
-
     MainManager manager;
-	// Use this for initialization
+	
+    // Use this for initialization
 	void Start () {
         try
         {
-            manager = GameObject.Find("MainManager").GetComponent<MainManager>();
-
+           manager = GameObject.Find("MainManager").GetComponent<MainManager>(); 
         }
         catch(MissingComponentException ex)
         {
             Debug.Log(ex);
         }
     }
-	
 
     public void gotoInit()
     {
@@ -30,9 +28,5 @@ public class MoveScene : MonoBehaviour {
         SceneManager.LoadScene(1);
         manager.setState(1);
     }
-    public void gotoInspect()
-    {
-        SceneManager.LoadScene(2);
-        manager.setState(2);
-    }
+
 }
