@@ -3,11 +3,11 @@ using System.Collections;
 
 public class MainManager : MonoBehaviour {
 
-    public GameObject MainPanel, MAddPanel, MListPanel, InspectPanel;
+    public GameObject MainPanel, MAddPanel, MListPanel;
 
     public enum state
     {
-        Main ,MAdd, MList, Inspect
+        Main ,MAdd, MList
     }
 
     public state currentstate;
@@ -18,7 +18,6 @@ public class MainManager : MonoBehaviour {
         MainPanel.SetActive(false);
         MAddPanel.SetActive(false);
         MListPanel.SetActive(false);
-        InspectPanel.SetActive(false);
 
         MainPanel.SetActive(true);
         this.currentstate = state.Main;
@@ -26,19 +25,17 @@ public class MainManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            ActivatePanel((int)state.Main);
+        }
 	}
 
     public void setState(int currentstate)
     {
         this.currentstate = (state)currentstate;
     }
-
-    public void BacktoMain()
-    {
-        ActivatePanel((int)state.Main);
-    }
-
 
     public void ActivatePanel(int nextState)
     {
@@ -53,9 +50,7 @@ public class MainManager : MonoBehaviour {
             case state.MList:
                 MListPanel.SetActive(false);
                 break;
-            case state.Inspect:
-                InspectPanel.SetActive(false);
-                break;
+
             default:
                 break;
         }
@@ -72,10 +67,6 @@ public class MainManager : MonoBehaviour {
             case state.MList:
                 MListPanel.SetActive(true);
                 this.currentstate = state.MList;
-                break;
-            case state.Inspect:
-                InspectPanel.SetActive(true);
-                this.currentstate = state.Inspect;
                 break;
             default:
                 break;
