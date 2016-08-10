@@ -118,46 +118,9 @@ public class DB : MonoBehaviour {
 		CloseDB ();
 		return readArray;
 	}
-    //MachineList.db
-    //Get MachineList into ArrayList From State
-    public static ArrayList GetMachineList(string state)
-    {
-        OpenDB("MachineList.db");
-        ArrayList readArray = new ArrayList();
-
-        using (dbCon = new SqliteConnection(connectionString))
-        {
-            dbCon.Open();
-
-            using (dbCmd = dbCon.CreateCommand())
-            {
-                string sqlQuery = String.Format("SELECT * FROM 'MachineList' WHERE state={0}", state);
-                dbCmd.CommandText = sqlQuery;
-
-                using (reader = dbCmd.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-                        int j = 0;
-                        string[] row = new string[reader.FieldCount];
-                        while (j < reader.FieldCount)
-                        {
-                            row[j] = reader.GetString(j);
-                            j++;
-                        }
-                        readArray.Add(row);
-                    }
-                }
-            }
-        }
-        CloseDB();
-        return readArray;
-    }
-
 	//MachineList.db
 	//Get MachineList into ArrayList From State
-	public ArrayList GetMachineList(string state) {
+	public static ArrayList GetMachineList(string state) {
 		OpenDB("MachineList.db");
 		ArrayList readArray = new ArrayList();
 
@@ -188,7 +151,7 @@ public class DB : MonoBehaviour {
 	}
 	//MachineList.db
 	//enroll checked machine as soon into DB table
-	public void PutMachineList(string machineName, string worker)
+	public static void PutMachineList(string machineName, string worker)
 	{
 		OpenDB("MachineList.db");
 		string MachineCode = GetMachineCode(machineName);
@@ -213,6 +176,22 @@ public class DB : MonoBehaviour {
 				dbCmd.CommandText = sqlQuery;
 				dbCmd.ExecuteScalar();
 				
+			}
+		}
+		CloseDB();
+	}
+			
+	//MachineList.db
+	//enroll checked machine as soon into DB table
+	public static void UpdateMachineList(string machineCode, string state)
+	{
+		OpenDB("MachineList.db");
+		using (dbCon = new SqliteConnection(connectionString)) {
+			dbCon.Open();
+
+			using(dbCmd = dbCon.CreateCommand()) {
+				dbCmd.CommandText = String.Format("UPDATE MachineList SET State='{0}' WHERE MachineCode='{1}'",state,machineCode);
+				dbCmd.ExecuteScalar();	
 			}
 		}
 		CloseDB();

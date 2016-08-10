@@ -34,14 +34,8 @@ public class DBManager : MonoBehaviour {
       //CkList[0] -> MachineName CkList[1] -> MachineCode
       //ArrayList CkList = db.GetMachineCodeList();
       MachineName = "SAVEEN2000";
-      //기기코드 버튼 클릭 -> ManchineNameList를 보여줌
-      //그 중 하나를 선택하면 그에 해당하는 Code를 return
-      MachineCode = DB.GetMachineCode(MachineName);
-      //그 후 MachineList.db의 sqlite_sequence table에서 name과 일치하는 seq+1을 리턴(시리얼번호)
-      Serial = DB.GetSerial(MachineName);
-      SerialCode = MachineCode + "-" + Serial;
-            //(MachineName,MachineCode,worker,serial)
-            DB.PutMachineList(MachineName,SerialCode,Worker,Serial);
+      //(MachineName,MachineCode,worker,serial)
+      DB.PutMachineList(MachineName,Worker);
     }
     else if(Input.GetKeyUp(KeyCode.LeftArrow)) {
       ArrayList CkList = new ArrayList();
