@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.WSA;
 
 
 public class PopupManager : MonoBehaviour {
@@ -23,7 +22,6 @@ public class PopupManager : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButtonDown(0))
         {
-            Toast.Create(null, "야호").Show();
         }
 	}
 }

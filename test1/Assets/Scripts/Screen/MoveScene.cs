@@ -1,14 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MoveScene : MonoBehaviour {
-    
-    MainManager manager;
-	
+
+    public Text text;
+    string testText;
+    int i = 0;
     // Use this for initialization
 	void Start () {
+        testText = "";
+        testText = DB.GetUserData("SongSooMin", "abcde");
 
+    }
+    void Update()
+    {
+        text.text = testText;
+    }
+
+    public void datatest()
+    {
+         if(i%2== 0)
+        {
+            DB.PutUserData("testname" + i.ToString(), "abcde", "1");
+            i++;
+        }
+        else
+        {
+            testText = DB.GetUserData("testname" + (i - 1).ToString(), "abcde");
+            i++;
+        }
+        
 
     }
 
@@ -28,4 +51,8 @@ public class MoveScene : MonoBehaviour {
 
     }
 
+    public void gotoBarcode()
+    {
+        SceneManager.LoadScene(3);
+    }
 }
