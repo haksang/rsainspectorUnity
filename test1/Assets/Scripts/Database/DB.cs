@@ -155,23 +155,64 @@ public class DB : MonoBehaviour {
         return readArray;
     }
 
-
-    //MachineList.db
-    //enroll checked machine as soon into DB table
-    public static void PutMachineList(string machineName, string machineCode,String worker,String Serial)
-	{
+	//MachineList.db
+	//Get MachineList into ArrayList From State
+	public ArrayList GetMachineList(string state) {
 		OpenDB("MachineList.db");
+		ArrayList readArray = new ArrayList();
+
 		using (dbCon = new SqliteConnection(connectionString)) {
 			dbCon.Open();
 
 			using(dbCmd = dbCon.CreateCommand()) {
-				string date = DateTime.Now.ToString("yyyy.MM.dd. HH:mm.");
-				dbCmd.CommandText = String.Format("UPDATE sqlite_sequence SET seq='{0}' WHERE name='{1}'",Serial,machineName);
+				string sqlQuery = String.Format ("SELECT * FROM 'MachineList' WHERE state={0}",state);
+				dbCmd.CommandText = sqlQuery;
+
+				using (reader = dbCmd.ExecuteReader ()) {
+
+					while (reader.Read ()) {
+						int j = 0;
+						string[] row = new string[reader.FieldCount];
+						while (j < reader.FieldCount)
+						{
+							row [j] = reader.GetString (j);
+							j++;
+						}
+						readArray.Add(row);
+					}
+				}
+			}
+		}
+		CloseDB ();
+		return readArray;
+	}
+	//MachineList.db
+	//enroll checked machine as soon into DB table
+	public void PutMachineList(string machineName, string worker)
+	{
+		OpenDB("MachineList.db");
+		string MachineCode = GetMachineCode(machineName);
+		string Sequence = GetSerial(machineName);
+		int seq = Convert.ToInt32(Sequence);
+		Sequence = Convert.ToString(++seq);
+			
+      	string SerialCode = MachineCode + "-" + Sequence;
+		string date = DateTime.Now.ToString("yyyy.MM.dd. HH:mm.");
+
+		using (dbCon = new SqliteConnection(connectionString)) {
+			dbCon.Open();
+
+			using(dbCmd = dbCon.CreateCommand()) {
+
+				Debug.Log(Sequence + " " + machineName);
+				dbCmd.CommandText = String.Format("UPDATE sqlite_sequence SET seq='{0}' WHERE name='{1}'",Sequence,machineName);
 				dbCmd.ExecuteScalar();	
+
 				string sqlQuery = String.Format ("INSERT INTO MachineList (id,MachineCode,MachineName,Worker,Date,State) VALUES ('{0}','{1}','{2}','{3}','{4}','0')",
-				Serial,machineCode,machineName,worker,date);
+				Sequence, SerialCode, machineName, worker, date);
 				dbCmd.CommandText = sqlQuery;
 				dbCmd.ExecuteScalar();
+				
 			}
 		}
 		CloseDB();
@@ -193,10 +234,7 @@ public class DB : MonoBehaviour {
 						while (reader.Read ()) {
 							Sequence = reader.GetString (0);
 						}
-					}	
-					int seq = Convert.ToInt32(Sequence);
-					Sequence = Convert.ToString(++seq);
-					Debug.Log(Sequence);
+					}
 				}
 			}
 			CloseDB();
