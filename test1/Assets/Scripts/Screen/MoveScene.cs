@@ -12,7 +12,8 @@ public class MoveScene : MonoBehaviour {
 	void Start () {
         testText = "";
         testText = DB.GetUserData("SongSooMin", "abcde");
-
+        DB.PutMachineList("SAVEEN2000","testText");
+        DB.UpdateMachineList("destinsavee2000-1","5");
     }
     void Update()
     {
